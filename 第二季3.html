@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>轮播图制作</title>
+	<meta charset="utf-8">
+	<style type="text/css">
+		*{margin:0;padding: 0;}
+		.play {width: 800px;height: 500px;background: red;margin: 0 auto;position: relative;overflow: hidden;}  /*相对定位，作为参照物*/
+		   /*超出部分隐藏*/
+		.play .list ul{width: 200px;height: 30px;position: absolute;bottom: 20px;right: 0;}  /*绝对定位，跟着相对于参照物的位置*/
+		.play .list ul li{float: left;width: 20px;height: 20px;border: 2px solid #fff;border-radius: 10px;list-style: none;line-height: 20px;text-align: center;margin-left: 5px;}
+		.left{position: absolute;top: 45%;left:0;}
+		.left:hover{background: rgba(0,0,0,0.5);}
+		.right{position: absolute;top: 45%;right:0;}
+		.right:hover{background: rgba(0,0,0,0.5);}
+
+		.active {background: #fff;}
+
+
+	</style>
+</head>
+<body>
+	<div class="play">
+		<!-- 图片 -->
+		<div class="pic">
+			<img src="images/1.jpg">
+			<img src="images/2.jpg">
+			<img src="images/3.jpg">
+			<img src="images/4.jpg">
+			<img src="images/5.jpg">
+		</div>
+
+		<!-- 列表 -->
+		<div class="list">
+			<ul>
+				<li class="active"></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+			
+		</div>
+
+		<!-- 箭头 -->
+		<div class="jiantou">
+			<img src="images/left.png" class="left">
+			<img src="images/right.png" class="right">
+			
+		</div>
+
+
+	</div>
+
+	<script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
+	<script type="text/javascript">
+		var time=0;
+		timeplay=null;
+
+
+		$(".play .list ul li").mouseover(function(){
+			clearInterval(timeplay);//清除时钟，避免冲突
+			index=$(this).index();
+			// alert(index);
+			$(this).addClass("active").siblings().removeClass("active");
+			$(".play .pic img").eq(index).show().siblings(".play .pic img").hide();
+
+		}).mouseout(function(){
+			clock();
+		});
+
+
+		clock();
+		
+		function clock(){
+			timeplay=setInterval(function(){
+				time++; 
+
+				if(time<5)
+				   {
+				   	$(".play ul li").eq(time).addClass("active").siblings().removeClass("active");
+				    $(".play .pic img").eq(time).show().siblings(".play .pic img").hide();			    
+				    }
+				else{time=-1;}
+				// alert(time);
+				
+
+			},1000);
+		}
+		// 左切换
+		$(".play .jiantou .left").click(function(){
+			time--;
+			if(time>=0){
+				$(".play .list ul li").eq(time).addClass("active").siblings().removeClass("active");
+				$(".play .pic img").eq(time).show().siblings().hide();
+			}
+			else{time=5;
+				$(".play .list ul li").eq(time=4).addClass("active").siblings().removeClass("active");
+				$(".play .pic img").eq(time=4).show().siblings().hide();
+
+			}
+		});
+		
+
+		// 右切换
+		$(".play .jiantou .right").click(function(){
+			time++;
+			if(time<=4){
+				$(".play .list ul li").eq(time).addClass("active").siblings().removeClass("active");
+				$(".play .pic img").eq(time).show().siblings().hide();
+			}
+			else{time=-1;
+				$(".play .list ul li").eq(time=0).addClass("active").siblings().removeClass("active");
+				$(".play .pic img").eq(time=0).show().siblings().hide();
+
+			}
+		});
+		//鼠标放在箭头上停止自动轮播
+		$(".play .jiantou").mouseover(function(){
+			clearInterval(timeplay);
+
+		}).mouseout(function(){
+			clock();
+		})
+
+
+	</script>
+	</script>
+
+</body>
+</html>
